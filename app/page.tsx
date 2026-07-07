@@ -48,7 +48,7 @@ const events: EventItem[] = [
     venue: null,
     venueText: "Venue to be announced",
     hasVenue: false,
-    dresscode: "Her: Elegant pastels & florals\nHim: Crisp formals or Indo-western",
+    dresscode: "Her: Pastel dreams, floral flair\nHim: Sharp formals, soft charm",
     accentColor: "#D4A5A5",
     accentColor2: "#C9A961",
     bgColor: "#3D2020",
@@ -67,7 +67,7 @@ const events: EventItem[] = [
     venue: "Moku Home",
     mapsQuery: "Moku Home Hyderabad",
     hasVenue: true,
-    dresscode: "Her: Indo-western\nHim: Kurtas",
+    dresscode: "Her: Indo-western, henna-ready\nHim: Kurta cool, henna crew",
     accentColor: "#9CAF88",
     accentColor2: "#C9A961",
     bgColor: "#2A2F1E",
@@ -86,8 +86,7 @@ const events: EventItem[] = [
     venue: "Moku Home",
     mapsQuery: "Moku Home Hyderabad",
     hasVenue: true,
-    dresscode:
-      "We're going full yellow!\nHer: Yellow indo-western\nHim: Yellow kurtas — get ready to glow",
+    dresscode: "Her: Yellow indo-western / Kurtas - smile bright\nHim: Yellow kurtas — shine bright",
     accentColor: "#E8B84B",
     accentColor2: "#C9A961",
     bgColor: "#3D2F0F",
@@ -145,7 +144,7 @@ const events: EventItem[] = [
     venue: "Reception Venue",
     mapsUrl: "https://maps.app.goo.gl/43xvox1XoqkCdhyj8?g_st=iw",
     hasVenue: true,
-    dresscode: "Her: Glamorous gowns or sarees\nHim: Suits or Indo-western — turn heads!",
+    dresscode: "Her: Lehengas for tradition, Gowns for Glam — steal the spotlight\nHim: Suits or Indo-western — turn heads",
     accentColor: "#2C3567",
     accentColor2: "#C9A961",
     bgColor: "#1B1F3D",
@@ -260,6 +259,27 @@ function RSVPForm({ accent }: { accent: string }) {
     note: "",
   });
   const [done, setDone] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = async () => {
+    if (!form.first || submitting) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("submit failed");
+      setDone(true);
+    } catch {
+      setError("Couldn't submit right now — please try again in a moment.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   // Three-state toggle: undefined -> "yes" -> "tentative" -> undefined
   const cycleEvent = (title: string) => {
@@ -403,16 +423,24 @@ function RSVPForm({ accent }: { accent: string }) {
         onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
       />
 
+      {error && (
+        <div style={{ color: accent, fontSize: "11px", marginBottom: "10px", fontFamily: "var(--font-montserrat)" }}>
+          {error}
+        </div>
+      )}
+
       <button
-        onClick={() => form.first && setDone(true)}
+        onClick={submit}
+        disabled={submitting}
         style={{
           width: "100%", padding: "14px", borderRadius: "10px",
           background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
           border: "none", color: "#fff", fontSize: "13px", fontWeight: 800,
-          letterSpacing: "2px", fontFamily: "var(--font-montserrat)", cursor: "pointer",
+          letterSpacing: "2px", fontFamily: "var(--font-montserrat)",
+          cursor: submitting ? "not-allowed" : "pointer", opacity: submitting ? 0.6 : 1,
         }}
       >
-        SUBMIT RSVP ✨
+        {submitting ? "SUBMITTING…" : "SUBMIT RSVP ✨"}
       </button>
     </div>
   );
