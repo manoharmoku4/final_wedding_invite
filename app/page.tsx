@@ -711,6 +711,7 @@ export default function Home() {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [tabBatch, setTabBatch] = useState(0); // 0 = first 3 tabs, 1 = last 3 tabs
   const touchStart = useRef<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const current = events[activeIdx];
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -735,11 +736,23 @@ export default function Home() {
   const handleOpen = () => {
     setOpened(true);
     setMusicPlaying(true);
+    audioRef.current?.play().catch(() => {});
   };
 
-  if (!opened)
-    return (
-      <>
+  const toggleMusic = () => {
+    setMusicPlaying((p) => {
+      const next = !p;
+      if (next) audioRef.current?.play().catch(() => {});
+      else audioRef.current?.pause();
+      return next;
+    });
+  };
+
+  return (
+    <>
+      <audio ref={audioRef} src="/audio/background.mp3" loop preload="auto" />
+      {!opened ? (
+        <>
         <style>{`
           *{margin:0;padding:0;box-sizing:border-box;}
           @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -809,11 +822,9 @@ export default function Home() {
             </button>
           </div>
         </div>
-      </>
-    );
-
-  return (
-    <>
+        </>
+      ) : (
+        <>
       <style>{`
         *{margin:0;padding:0;box-sizing:border-box;}
         @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -823,7 +834,7 @@ export default function Home() {
         ::-webkit-scrollbar-thumb{background:#c9a961;border-radius:4px;}
       `}</style>
       <div style={{ minHeight: "100dvh", background: PALETTE.ivory, fontFamily: "var(--font-montserrat)" }}>
-        <MusicToggle playing={musicPlaying} onToggle={() => setMusicPlaying((p) => !p)} accent={PALETTE.maroon} />
+        <MusicToggle playing={musicPlaying} onToggle={toggleMusic} accent={PALETTE.maroon} />
         <RSVPButton
           accent={PALETTE.maroon}
           onPress={() => {
@@ -984,6 +995,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+        </>
+      )}
     </>
   );
 }
