@@ -262,8 +262,10 @@ function RSVPForm({ accent }: { accent: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const canSubmit = form.first.trim().length > 0 && form.last.trim().length > 0;
+
   const submit = async () => {
-    if (!form.first || submitting) return;
+    if (!canSubmit || submitting) return;
     setSubmitting(true);
     setError(null);
     try {
@@ -335,7 +337,7 @@ function RSVPForm({ accent }: { accent: string }) {
         />
         <input
           style={inp}
-          placeholder="Last Name"
+          placeholder="Last Name *"
           value={form.last}
           onChange={(e) => setForm((f) => ({ ...f, last: e.target.value }))}
         />
@@ -391,28 +393,36 @@ function RSVPForm({ accent }: { accent: string }) {
         <div style={{ fontSize: "10px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.6, marginBottom: "6px" }}>
           WHICH EVENTS?
         </div>
-        <div style={{ fontSize: "9px", color: PALETTE.textDark, opacity: 0.5, marginBottom: "8px", fontFamily: "var(--font-montserrat)" }}>
-          Tap once = Attending ✓ · Tap twice = Tentative ? · Tap again to remove
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-          {events.map((ev) => {
-            const state = form.events[ev.title];
-            const c = chipColor(state);
-            return (
-              <button
-                key={ev.id}
-                onClick={() => cycleEvent(ev.title)}
-                style={{
-                  padding: "5px 12px", borderRadius: "16px", border: `1px solid ${c.border}`,
-                  background: c.bg, color: c.color,
-                  fontSize: "11px", fontWeight: 700, cursor: "pointer", transition: "all 0.2s",
-                }}
-              >
-                {chipLabel(ev.title, state)}
-              </button>
-            );
-          })}
-        </div>
+        {form.notSure ? (
+          <div style={{ fontSize: "10px", color: PALETTE.textDark, opacity: 0.6, fontFamily: "var(--font-montserrat)" }}>
+            We&apos;ll mark you tentative for all events since you&apos;re not sure of your travel dates yet.
+          </div>
+        ) : (
+          <>
+            <div style={{ fontSize: "9px", color: PALETTE.textDark, opacity: 0.5, marginBottom: "8px", fontFamily: "var(--font-montserrat)" }}>
+              Tap once = Attending ✓ · Tap twice = Tentative ? · Tap again to remove
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+              {events.map((ev) => {
+                const state = form.events[ev.title];
+                const c = chipColor(state);
+                return (
+                  <button
+                    key={ev.id}
+                    onClick={() => cycleEvent(ev.title)}
+                    style={{
+                      padding: "5px 12px", borderRadius: "16px", border: `1px solid ${c.border}`,
+                      background: c.bg, color: c.color,
+                      fontSize: "11px", fontWeight: 700, cursor: "pointer", transition: "all 0.2s",
+                    }}
+                  >
+                    {chipLabel(ev.title, state)}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
 
       <textarea
@@ -431,13 +441,13 @@ function RSVPForm({ accent }: { accent: string }) {
 
       <button
         onClick={submit}
-        disabled={submitting}
+        disabled={submitting || !canSubmit}
         style={{
           width: "100%", padding: "14px", borderRadius: "10px",
           background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
           border: "none", color: "#fff", fontSize: "13px", fontWeight: 800,
           letterSpacing: "2px", fontFamily: "var(--font-montserrat)",
-          cursor: submitting ? "not-allowed" : "pointer", opacity: submitting ? 0.6 : 1,
+          cursor: submitting || !canSubmit ? "not-allowed" : "pointer", opacity: submitting || !canSubmit ? 0.6 : 1,
         }}
       >
         {submitting ? "SUBMITTING…" : "SUBMIT RSVP ✨"}

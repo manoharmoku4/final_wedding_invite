@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  if (!body?.first) {
-    return NextResponse.json({ error: "First name is required" }, { status: 400 });
+  if (!body?.first || !body?.last) {
+    return NextResponse.json({ error: "First and last name are required" }, { status: 400 });
   }
 
   try {
