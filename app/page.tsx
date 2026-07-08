@@ -706,7 +706,7 @@ function EventCard({ event }: { event: EventItem }) {
 export default function Home() {
   const [opened, setOpened] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
-  const [showRSVP, setShowRSVP] = useState(false);
+  const [showRSVP, setShowRSVP] = useState(true);
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [tabBatch, setTabBatch] = useState(0); // 0 = first 3 tabs, 1 = last 3 tabs
   const touchStart = useRef<number | null>(null);
