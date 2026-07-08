@@ -769,7 +769,7 @@ export default function Home() {
           <img
             src="/images/cover.jpg"
             alt="Manisha & Akshay"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", zIndex: 0 }}
           />
           <div
             style={{
