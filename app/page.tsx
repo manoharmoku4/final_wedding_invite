@@ -760,25 +760,12 @@ export default function Home() {
         <div
           className="cover-screen"
           style={{
-            minHeight: "100dvh", height: "100dvh", position: "relative", overflow: "hidden",
+            minHeight: "100dvh", position: "relative",
             background: PALETTE.ivory,
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            padding: "28px 20px calc(28px + env(safe-area-inset-bottom))",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/cover.jpg"
-            alt="Manisha & Akshay"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
-          />
-          <div
-            style={{
-              position: "absolute", inset: 0,
-              background: "linear-gradient(to bottom, rgba(61,32,23,0) 0%, rgba(61,32,23,0) 55%, rgba(61,32,23,0.55) 80%, rgba(61,32,23,0.85) 100%)",
-              zIndex: 1,
-            }}
-          />
-
           {Array.from({ length: 12 }).map((_, i) => (
             <div
               key={i}
@@ -792,11 +779,26 @@ export default function Home() {
             </div>
           ))}
 
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, textAlign: "center", padding: "0 24px calc(48px + env(safe-area-inset-bottom))", animation: "fadeUp 1s ease forwards" }}>
+          <div
+            style={{
+              width: "100%", maxWidth: "440px", borderRadius: "24px", overflow: "hidden",
+              boxShadow: "0 12px 40px rgba(122,46,46,0.25)", border: `1px solid ${PALETTE.gold}33`,
+              zIndex: 2, animation: "fadeUp 1s ease forwards",
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/cover.jpg"
+              alt="Manisha & Akshay"
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+          </div>
+
+          <div style={{ zIndex: 2, textAlign: "center", marginTop: "22px", animation: "fadeUp 1s ease forwards" }}>
             <div
               style={{
-                fontSize: "11px", letterSpacing: "3px", color: PALETTE.gold, fontFamily: "var(--font-montserrat)", fontWeight: 700,
-                marginBottom: "18px", textShadow: "0 2px 12px rgba(0,0,0,0.6)",
+                fontSize: "11px", letterSpacing: "3px", color: PALETTE.maroon, fontFamily: "var(--font-montserrat)", fontWeight: 700,
+                marginBottom: "18px",
               }}
             >
               AUGUST 16 – 23, 2026 · HYDERABAD
@@ -809,7 +811,7 @@ export default function Home() {
                 border: "none", borderRadius: "50px", padding: "16px 48px",
                 color: PALETTE.textDark, fontSize: "12px", fontWeight: 800, letterSpacing: "4px",
                 fontFamily: "var(--font-montserrat)", cursor: "pointer",
-                boxShadow: `0 0 40px ${PALETTE.gold}88`, animation: "pulse 2.5s ease-in-out infinite",
+                boxShadow: `0 4px 20px ${PALETTE.gold}66`, animation: "pulse 2.5s ease-in-out infinite",
               }}
             >
               OPEN INVITATION ✨
