@@ -168,10 +168,10 @@ function MusicToggle({
       className="header-btn"
       style={{
         flexShrink: 0, width: "32px", height: "32px", borderRadius: "50%",
-        background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
-        border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer",
+        background: "rgba(255,255,255,0.5)",
+        border: `1.5px solid ${accent}55`, cursor: "pointer",
         display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "13px", boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+        fontSize: "13px",
       }}
       aria-label={playing ? "Mute music" : "Play music"}
     >
@@ -186,13 +186,12 @@ function RSVPButton({ accent, onPress }: { accent: string; onPress: () => void }
       onClick={onPress}
       className="header-btn"
       style={{
-        flexShrink: 0, height: "32px", borderRadius: "16px", padding: "0 13px",
-        background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
-        border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer",
+        flexShrink: 0, height: "32px", borderRadius: "16px", padding: "0 14px",
+        background: "rgba(255,255,255,0.5)",
+        border: `1.5px solid ${accent}55`, cursor: "pointer",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: "10px", fontWeight: 800, letterSpacing: "1px",
-        color: "#fff", fontFamily: "var(--font-montserrat)",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+        color: accent, fontFamily: "var(--font-montserrat)",
       }}
     >
       RSVP
@@ -321,8 +320,8 @@ function RSVPForm({ accent }: { accent: string }) {
 
   const inp: React.CSSProperties = {
     background: "rgba(255,255,255,0.6)", border: `1px solid ${accent}66`,
-    borderRadius: "8px", padding: "10px 12px", color: PALETTE.textDark,
-    fontSize: "14px", fontFamily: "var(--font-montserrat)", outline: "none", width: "100%", boxSizing: "border-box",
+    borderRadius: "8px", padding: "10px 8px", color: PALETTE.textDark,
+    fontSize: "14px", fontFamily: "var(--font-montserrat)", outline: "none", width: "100%", minWidth: 0, boxSizing: "border-box",
   };
 
   return (
@@ -359,8 +358,8 @@ function RSVPForm({ accent }: { accent: string }) {
           </label>
         </div>
         {!form.notSure && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            <div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", minWidth: 0 }}>
+            <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: "9px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.6, marginBottom: "6px", fontFamily: "var(--font-montserrat)", fontWeight: 700 }}>
                 📅 ARRIVAL DATE
               </div>
@@ -373,7 +372,7 @@ function RSVPForm({ accent }: { accent: string }) {
                 onChange={(e) => setForm((f) => ({ ...f, arrivalDate: e.target.value }))}
               />
             </div>
-            <div>
+            <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: "9px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.6, marginBottom: "6px", fontFamily: "var(--font-montserrat)", fontWeight: 700 }}>
                 ⏰ ARRIVAL TIME
               </div>
@@ -426,7 +425,7 @@ function RSVPForm({ accent }: { accent: string }) {
 
       <textarea
         style={{ ...inp, resize: "none", marginBottom: "14px" }}
-        rows={2}
+        rows={1}
         placeholder="A message for the couple... (optional)"
         value={form.note}
         onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
@@ -573,10 +572,11 @@ function EventCard({ event }: { event: EventItem }) {
           boxShadow: `0 12px 40px ${event.accentColor}44`,
           border: `1px solid ${event.accentColor}33`,
           position: "relative",
+          display: "flex", flexDirection: "column", height: "100%",
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={event.cardImage} alt={event.title} style={{ width: "100%", height: "auto", display: "block" }} />
+        <img src={event.cardImage} alt={event.title} style={{ width: "100%", flex: "1 1 auto", minHeight: 0, objectFit: "cover", display: "block" }} />
 
         <div
           onClick={() => setDetailsOpen(!detailsOpen)}
@@ -585,6 +585,7 @@ function EventCard({ event }: { event: EventItem }) {
             borderTop: `2px solid ${event.accentColor}44`,
             padding: "12px 16px", cursor: "pointer",
             display: "flex", justifyContent: "space-between", alignItems: "center",
+            flex: "0 0 auto",
           }}
         >
           <div>
@@ -842,26 +843,30 @@ export default function Home() {
               borderBottom: `1px solid ${PALETTE.gold}33`,
             }}
           >
-            <MusicToggle playing={musicPlaying} onToggle={toggleMusic} accent={PALETTE.maroon} />
+            <div style={{ flex: "0 0 70px", display: "flex", justifyContent: "flex-start" }}>
+              <MusicToggle playing={musicPlaying} onToggle={toggleMusic} accent={PALETTE.maroon} />
+            </div>
             <div style={{ textAlign: "center", flex: "1 1 auto", minWidth: 0 }}>
               <div style={{ fontFamily: "var(--font-dancing)", fontSize: "20px", color: PALETTE.maroon }}>Manisha & Akshay</div>
               <div style={{ fontSize: "8px", letterSpacing: "3px", color: PALETTE.textDark, opacity: 0.5, marginTop: "2px" }}>
                 #AKMANIFESTED · AUG 16–23 · HYDERABAD
               </div>
             </div>
-            <RSVPButton
-              accent={PALETTE.maroon}
-              onPress={() => {
-                setShowRSVP(true);
-                setTimeout(() => {
-                  const el = document.getElementById("rsvp-section");
-                  if (el) {
-                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
-                    window.scrollTo({ top: y, behavior: "smooth" });
-                  }
-                }, 100);
-              }}
-            />
+            <div style={{ flex: "0 0 70px", display: "flex", justifyContent: "flex-end" }}>
+              <RSVPButton
+                accent={PALETTE.maroon}
+                onPress={() => {
+                  setShowRSVP(true);
+                  setTimeout(() => {
+                    const el = document.getElementById("rsvp-section");
+                    if (el) {
+                      const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                      window.scrollTo({ top: y, behavior: "smooth" });
+                    }
+                  }, 100);
+                }}
+              />
+            </div>
           </div>
 
           <div style={{ padding: "10px 16px 8px", maxWidth: "480px", margin: "0 auto", width: "100%", flex: "1 1 auto", display: "flex", flexDirection: "column", minHeight: 0, boxSizing: "border-box" }}>
@@ -908,7 +913,7 @@ export default function Home() {
 
             <div
               key={activeIdx}
-              style={{ animation: "fadeUp 0.35s ease forwards", flex: "1 1 auto", minHeight: 0, marginBottom: "8px", overflow: "hidden", borderRadius: "24px" }}
+              style={{ animation: "fadeUp 0.35s ease forwards", flex: "1 1 auto", minHeight: 0, marginBottom: "16px", overflow: "hidden", borderRadius: "24px" }}
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
             >
