@@ -394,7 +394,7 @@ function RSVPForm({ accent }: { accent: string }) {
           WHICH EVENTS?
         </div>
         <div style={{ fontSize: "9px", color: PALETTE.textDark, opacity: 0.5, marginBottom: "6px", fontFamily: "var(--font-montserrat)" }}>
-          Tap: Attending ✓ → Tentative ? → remove
+          Tap once = Attending ✓ · Tap twice = Tentative ? · Tap again to remove
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
           {events.map((ev) => {
