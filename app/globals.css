@@ -16,15 +16,14 @@ body {
   scrollbar-width: none;
 }
 
-/* ---------- Floating music/RSVP buttons ---------- */
-.floating-btn {
-  opacity: 0.55;
-  transition: opacity 0.2s ease;
+/* ---------- Header music/RSVP buttons ---------- */
+.header-btn {
+  transition: transform 0.15s ease;
 }
 
-.floating-btn:hover,
-.floating-btn:active {
-  opacity: 1;
+.header-btn:hover,
+.header-btn:active {
+  transform: scale(1.06);
 }
 
 /* ---------- Petals ---------- */

@@ -165,14 +165,13 @@ function MusicToggle({
   return (
     <button
       onClick={onToggle}
-      className="floating-btn"
+      className="header-btn"
       style={{
-        position: "fixed", top: "max(12px, env(safe-area-inset-top))", left: "max(12px, env(safe-area-inset-left))", zIndex: 50,
-        width: "36px", height: "36px", borderRadius: "50%",
+        flexShrink: 0, width: "32px", height: "32px", borderRadius: "50%",
         background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
         border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer",
         display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "14px", boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+        fontSize: "13px", boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
       }}
       aria-label={playing ? "Mute music" : "Play music"}
     >
@@ -185,16 +184,15 @@ function RSVPButton({ accent, onPress }: { accent: string; onPress: () => void }
   return (
     <button
       onClick={onPress}
-      className="floating-btn"
+      className="header-btn"
       style={{
-        position: "fixed", top: "max(12px, env(safe-area-inset-top))", right: "max(12px, env(safe-area-inset-right))", zIndex: 50,
-        height: "36px", borderRadius: "18px", padding: "0 14px",
+        flexShrink: 0, height: "32px", borderRadius: "16px", padding: "0 13px",
         background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
         border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: "10px", fontWeight: 800, letterSpacing: "1px",
         color: "#fff", fontFamily: "var(--font-montserrat)",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
       }}
     >
       RSVP
@@ -835,33 +833,35 @@ export default function Home() {
         ::-webkit-scrollbar-thumb{background:#c9a961;border-radius:4px;}
       `}</style>
       <div style={{ minHeight: "100dvh", background: PALETTE.ivory, fontFamily: "var(--font-montserrat)" }}>
-        <MusicToggle playing={musicPlaying} onToggle={toggleMusic} accent={PALETTE.maroon} />
-        <RSVPButton
-          accent={PALETTE.maroon}
-          onPress={() => {
-            setShowRSVP(true);
-            setTimeout(() => {
-              const el = document.getElementById("rsvp-section");
-              if (el) {
-                const y = el.getBoundingClientRect().top + window.scrollY - 80;
-                window.scrollTo({ top: y, behavior: "smooth" });
-              }
-            }, 100);
-          }}
-        />
-
         <div style={{ height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
           <div
             style={{
-              textAlign: "center", padding: "calc(10px + env(safe-area-inset-top)) 20px 8px", flex: "0 0 auto",
+              display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px",
+              padding: "calc(10px + env(safe-area-inset-top)) 14px 10px", flex: "0 0 auto",
               background: `linear-gradient(180deg, ${PALETTE.cream} 0%, ${PALETTE.ivory} 100%)`,
               borderBottom: `1px solid ${PALETTE.gold}33`,
             }}
           >
-            <div style={{ fontFamily: "var(--font-dancing)", fontSize: "20px", color: PALETTE.maroon }}>Manisha & Akshay</div>
-            <div style={{ fontSize: "8px", letterSpacing: "3px", color: PALETTE.textDark, opacity: 0.5, marginTop: "2px" }}>
-              #AKMANIFESTED · AUG 16–23 · HYDERABAD
+            <MusicToggle playing={musicPlaying} onToggle={toggleMusic} accent={PALETTE.maroon} />
+            <div style={{ textAlign: "center", flex: "1 1 auto", minWidth: 0 }}>
+              <div style={{ fontFamily: "var(--font-dancing)", fontSize: "20px", color: PALETTE.maroon }}>Manisha & Akshay</div>
+              <div style={{ fontSize: "8px", letterSpacing: "3px", color: PALETTE.textDark, opacity: 0.5, marginTop: "2px" }}>
+                #AKMANIFESTED · AUG 16–23 · HYDERABAD
+              </div>
             </div>
+            <RSVPButton
+              accent={PALETTE.maroon}
+              onPress={() => {
+                setShowRSVP(true);
+                setTimeout(() => {
+                  const el = document.getElementById("rsvp-section");
+                  if (el) {
+                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({ top: y, behavior: "smooth" });
+                  }
+                }, 100);
+              }}
+            />
           </div>
 
           <div style={{ padding: "10px 16px 8px", maxWidth: "480px", margin: "0 auto", width: "100%", flex: "1 1 auto", display: "flex", flexDirection: "column", minHeight: 0, boxSizing: "border-box" }}>
@@ -963,7 +963,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{ padding: "64px 16px 48px", maxWidth: "480px", margin: "0 auto" }}>
+        <div style={{ padding: "40px 16px 48px", maxWidth: "480px", margin: "0 auto" }}>
           <div style={{ background: PALETTE.cream, border: `1px solid ${PALETTE.gold}55`, borderRadius: "18px", padding: "20px 16px", marginBottom: "16px", textAlign: "center" }}>
             <div style={{ fontSize: "9px", letterSpacing: "3px", color: PALETTE.maroon, marginBottom: "14px", fontWeight: 700 }}>
               COUNTDOWN TO THE BIG DAY
