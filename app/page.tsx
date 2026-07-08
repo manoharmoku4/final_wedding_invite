@@ -747,6 +747,18 @@ export default function Home() {
     });
   };
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        audioRef.current?.pause();
+      } else if (musicPlaying) {
+        audioRef.current?.play().catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [musicPlaying]);
+
   return (
     <>
       <audio ref={audioRef} src="/audio/background.mp3" loop preload="auto" />
