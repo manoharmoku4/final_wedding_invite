@@ -324,9 +324,11 @@ function RSVPForm({ accent }: { accent: string }) {
     fontSize: "14px", fontFamily: "var(--font-montserrat)", outline: "none", width: "100%", minWidth: 0, boxSizing: "border-box",
   };
 
+  const dateTimeInp: React.CSSProperties = { ...inp, padding: "7px 6px", fontSize: "13px" };
+
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "10px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "8px" }}>
         <input
           style={inp}
           placeholder="First Name *"
@@ -341,11 +343,39 @@ function RSVPForm({ accent }: { accent: string }) {
         />
       </div>
 
-      <div style={{ marginBottom: "14px" }}>
-        <div style={{ fontSize: "10px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.6, marginBottom: "8px" }}>
+      <div style={{ marginBottom: "10px" }}>
+        <div style={{ fontSize: "10px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.85, marginBottom: "6px" }}>
           ARRIVING IN HYDERABAD
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+        {!form.notSure && (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", minWidth: 0, marginBottom: "8px" }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: "9px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.85, marginBottom: "5px", fontFamily: "var(--font-montserrat)", fontWeight: 700 }}>
+                📅 ARRIVAL DATE
+              </div>
+              <input
+                style={dateTimeInp}
+                type="date"
+                value={form.arrivalDate}
+                min="2026-08-14"
+                max="2026-08-23"
+                onChange={(e) => setForm((f) => ({ ...f, arrivalDate: e.target.value }))}
+              />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: "9px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.85, marginBottom: "5px", fontFamily: "var(--font-montserrat)", fontWeight: 700 }}>
+                ⏰ ARRIVAL TIME
+              </div>
+              <input
+                style={dateTimeInp}
+                type="time"
+                value={form.arrivalTime}
+                onChange={(e) => setForm((f) => ({ ...f, arrivalTime: e.target.value }))}
+              />
+            </div>
+          </div>
+        )}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <input
             type="checkbox"
             id="notSure"
@@ -357,74 +387,38 @@ function RSVPForm({ accent }: { accent: string }) {
             Not sure yet
           </label>
         </div>
-        {!form.notSure && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", minWidth: 0 }}>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: "9px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.6, marginBottom: "6px", fontFamily: "var(--font-montserrat)", fontWeight: 700 }}>
-                📅 ARRIVAL DATE
-              </div>
-              <input
-                style={inp}
-                type="date"
-                value={form.arrivalDate}
-                min="2026-08-14"
-                max="2026-08-23"
-                onChange={(e) => setForm((f) => ({ ...f, arrivalDate: e.target.value }))}
-              />
-            </div>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: "9px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.6, marginBottom: "6px", fontFamily: "var(--font-montserrat)", fontWeight: 700 }}>
-                ⏰ ARRIVAL TIME
-              </div>
-              <input
-                style={inp}
-                type="time"
-                value={form.arrivalTime}
-                onChange={(e) => setForm((f) => ({ ...f, arrivalTime: e.target.value }))}
-              />
-            </div>
-          </div>
-        )}
       </div>
 
-      <div style={{ marginBottom: "14px" }}>
-        <div style={{ fontSize: "10px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.6, marginBottom: "6px" }}>
+      <div style={{ marginBottom: "10px" }}>
+        <div style={{ fontSize: "10px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.85, marginBottom: "6px" }}>
           WHICH EVENTS?
         </div>
-        {form.notSure ? (
-          <div style={{ fontSize: "10px", color: PALETTE.textDark, opacity: 0.6, fontFamily: "var(--font-montserrat)" }}>
-            We&apos;ll mark you tentative for all events since you&apos;re not sure of your travel dates yet.
-          </div>
-        ) : (
-          <>
-            <div style={{ fontSize: "9px", color: PALETTE.textDark, opacity: 0.5, marginBottom: "8px", fontFamily: "var(--font-montserrat)" }}>
-              Tap once = Attending ✓ · Tap twice = Tentative ? · Tap again to remove
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-              {events.map((ev) => {
-                const state = form.events[ev.title];
-                const c = chipColor(state);
-                return (
-                  <button
-                    key={ev.id}
-                    onClick={() => cycleEvent(ev.title)}
-                    style={{
-                      padding: "5px 12px", borderRadius: "16px", border: `1px solid ${c.border}`,
-                      background: c.bg, color: c.color,
-                      fontSize: "11px", fontWeight: 700, cursor: "pointer", transition: "all 0.2s",
-                    }}
-                  >
-                    {chipLabel(ev.title, state)}
-                  </button>
-                );
-              })}
-            </div>
-          </>
-        )}
+        <div style={{ fontSize: "9px", color: PALETTE.textDark, opacity: 0.5, marginBottom: "6px", fontFamily: "var(--font-montserrat)" }}>
+          Tap: Attending ✓ → Tentative ? → remove
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+          {events.map((ev) => {
+            const state = form.events[ev.title];
+            const c = chipColor(state);
+            return (
+              <button
+                key={ev.id}
+                onClick={() => cycleEvent(ev.title)}
+                style={{
+                  padding: "5px 12px", borderRadius: "16px", border: `1px solid ${c.border}`,
+                  background: c.bg, color: c.color,
+                  fontSize: "11px", fontWeight: 700, cursor: "pointer", transition: "all 0.2s",
+                }}
+              >
+                {chipLabel(ev.title, state)}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <textarea
-        style={{ ...inp, resize: "none", marginBottom: "14px" }}
+        style={{ ...inp, resize: "none", marginBottom: "10px" }}
         rows={1}
         placeholder="A message for the couple... (optional)"
         value={form.note}
@@ -834,7 +828,7 @@ export default function Home() {
         ::-webkit-scrollbar-thumb{background:#c9a961;border-radius:4px;}
       `}</style>
       <div style={{ minHeight: "100dvh", background: PALETTE.ivory, fontFamily: "var(--font-montserrat)" }}>
-        <div style={{ height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        <div style={{ height: "100svh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
           <div
             style={{
               display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px",
@@ -848,8 +842,11 @@ export default function Home() {
             </div>
             <div style={{ textAlign: "center", flex: "1 1 auto", minWidth: 0 }}>
               <div style={{ fontFamily: "var(--font-dancing)", fontSize: "20px", color: PALETTE.maroon }}>Manisha & Akshay</div>
-              <div style={{ fontSize: "8px", letterSpacing: "3px", color: PALETTE.textDark, opacity: 0.5, marginTop: "2px" }}>
-                #AKMANIFESTED · AUG 16–23 · HYDERABAD
+              <div style={{ fontSize: "8px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.5, marginTop: "2px" }}>
+                HYDERABAD · AUG 16–23
+              </div>
+              <div style={{ fontSize: "8px", letterSpacing: "2px", color: PALETTE.textDark, opacity: 0.5 }}>
+                #AkManifested
               </div>
             </div>
             <div style={{ flex: "0 0 70px", display: "flex", justifyContent: "flex-end" }}>
@@ -858,9 +855,9 @@ export default function Home() {
                 onPress={() => {
                   setShowRSVP(true);
                   setTimeout(() => {
-                    const el = document.getElementById("rsvp-section");
+                    const el = document.getElementById("countdown-section");
                     if (el) {
-                      const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                      const y = el.getBoundingClientRect().top + window.scrollY - 12;
                       window.scrollTo({ top: y, behavior: "smooth" });
                     }
                   }, 100);
@@ -969,7 +966,7 @@ export default function Home() {
         </div>
 
         <div style={{ padding: "40px 16px 48px", maxWidth: "480px", margin: "0 auto" }}>
-          <div style={{ background: PALETTE.cream, border: `1px solid ${PALETTE.gold}55`, borderRadius: "18px", padding: "20px 16px", marginBottom: "16px", textAlign: "center" }}>
+          <div id="countdown-section" style={{ background: PALETTE.cream, border: `1px solid ${PALETTE.gold}55`, borderRadius: "18px", padding: "20px 16px", marginBottom: "16px", textAlign: "center" }}>
             <div style={{ fontSize: "9px", letterSpacing: "3px", color: PALETTE.maroon, marginBottom: "14px", fontWeight: 700 }}>
               COUNTDOWN TO THE BIG DAY
             </div>
@@ -983,7 +980,7 @@ export default function Home() {
             >
               <div style={{ textAlign: "left" }}>
                 <div style={{ fontSize: "12px", fontWeight: 800, letterSpacing: "2px", color: PALETTE.maroon }}>SUBMIT RSVP</div>
-                <div style={{ fontSize: "11px", color: PALETTE.textDark, opacity: 0.6, marginTop: "2px" }}>Let the couple know you&apos;re coming!</div>
+                <div style={{ fontSize: "11px", color: PALETTE.textDark, opacity: 0.85, marginTop: "2px" }}>Let the couple know you&apos;re coming!</div>
               </div>
               <span style={{ color: PALETTE.maroon, fontSize: "16px" }}>{showRSVP ? "▲" : "▼"}</span>
             </button>
@@ -995,7 +992,7 @@ export default function Home() {
             )}
           </div>
 
-          <div style={{ textAlign: "center", marginTop: "32px" }}>
+          <div style={{ textAlign: "center", marginTop: "16px" }}>
             <div style={{ fontFamily: "var(--font-dancing)", fontSize: "20px", color: PALETTE.maroon }}>With love & joy ✨</div>
             <div style={{ fontSize: "9px", color: PALETTE.textDark, opacity: 0.4, letterSpacing: "3px", marginTop: "6px" }}>#AKMANIFESTED</div>
           </div>

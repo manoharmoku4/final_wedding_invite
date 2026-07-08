@@ -15,10 +15,7 @@ function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
 
-  // If the guest isn't sure of their travel dates, mark every event Tentative
-  // rather than relying on individual per-event selections.
   var eventCells = EVENT_NAMES.map(function (name) {
-    if (data.notSure) return "Tentative";
     var status = (data.events || {})[name];
     if (status === "yes") return "Yes";
     if (status === "tentative") return "Tentative";
