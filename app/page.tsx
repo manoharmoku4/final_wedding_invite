@@ -48,7 +48,7 @@ const events: EventItem[] = [
     venue: null,
     venueText: "Venue to be announced",
     hasVenue: false,
-    dresscode: "Her: Pastel dreams, floral flair\nHim: Sharp formals, soft charm",
+    dresscode: "Her: Pastel dreams, floral flair\nHim: Sharp formals / Soft kurta charm",
     accentColor: "#D4A5A5",
     accentColor2: "#C9A961",
     bgColor: "#3D2020",
@@ -141,7 +141,7 @@ const events: EventItem[] = [
     subtitle: "Party All Night!",
     date: "Sunday, August 23, 2026",
     time: "7:00 PM",
-    venue: "Reception Venue",
+    venue: "Police Convention Center",
     mapsUrl: "https://maps.app.goo.gl/43xvox1XoqkCdhyj8?g_st=iw",
     hasVenue: true,
     dresscode: "Her: Lehengas for tradition, Gowns for Glam — steal the spotlight\nHim: Suits or Indo-western — turn heads",
@@ -590,10 +590,15 @@ function EventCard({ event }: { event: EventItem }) {
               📅 {event.date} · ⏰ {event.time}
             </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2px" }}>
-            <div style={{ color: event.accentColor, fontSize: "18px", animation: detailsOpen ? "none" : "pulse 2s ease-in-out infinite" }}>▲</div>
+          <div
+            style={{
+              display: "flex", flexDirection: "column", alignItems: "center", gap: "2px",
+              animation: detailsOpen ? "none" : "blink 1.8s ease-in-out infinite",
+            }}
+          >
+            <div style={{ color: event.accentColor, fontSize: "18px" }}>▲</div>
             <div style={{ fontSize: "8px", letterSpacing: "2px", color: event.accentColor, fontFamily: "var(--font-montserrat)", fontWeight: 700 }}>
-              SWIPE UP
+              TAP
             </div>
           </div>
         </div>
@@ -824,6 +829,7 @@ export default function Home() {
       <style>{`
         *{margin:0;padding:0;box-sizing:border-box;}
         @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
         input::placeholder,textarea::placeholder{color:rgba(61,40,23,.4);}
         input:focus,textarea:focus{border-color:rgba(61,40,23,.5)!important;}
         ::-webkit-scrollbar{width:3px;}
