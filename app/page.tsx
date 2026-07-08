@@ -165,14 +165,14 @@ function MusicToggle({
   return (
     <button
       onClick={onToggle}
+      className="floating-btn"
       style={{
-        position: "fixed", top: "12px", left: "12px", zIndex: 50,
+        position: "fixed", top: "max(12px, env(safe-area-inset-top))", left: "max(12px, env(safe-area-inset-left))", zIndex: 50,
         width: "36px", height: "36px", borderRadius: "50%",
         background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
         border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: "14px", boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-        transition: "all 0.3s",
       }}
       aria-label={playing ? "Mute music" : "Play music"}
     >
@@ -185,15 +185,16 @@ function RSVPButton({ accent, onPress }: { accent: string; onPress: () => void }
   return (
     <button
       onClick={onPress}
+      className="floating-btn"
       style={{
-        position: "fixed", top: "12px", right: "12px", zIndex: 50,
+        position: "fixed", top: "max(12px, env(safe-area-inset-top))", right: "max(12px, env(safe-area-inset-right))", zIndex: 50,
         height: "36px", borderRadius: "18px", padding: "0 14px",
         background: `linear-gradient(135deg, ${accent}, ${PALETTE.gold})`,
         border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: "10px", fontWeight: 800, letterSpacing: "1px",
         color: "#fff", fontFamily: "var(--font-montserrat)",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.3)", transition: "all 0.3s",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
       }}
     >
       RSVP
@@ -798,7 +799,7 @@ export default function Home() {
             </div>
           ))}
 
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, textAlign: "center", padding: "0 24px 48px", animation: "fadeUp 1s ease forwards" }}>
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, textAlign: "center", padding: "0 24px calc(48px + env(safe-area-inset-bottom))", animation: "fadeUp 1s ease forwards" }}>
             <div
               style={{
                 fontSize: "11px", letterSpacing: "3px", color: PALETTE.gold, fontFamily: "var(--font-montserrat)", fontWeight: 700,
@@ -852,7 +853,7 @@ export default function Home() {
         <div style={{ height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
           <div
             style={{
-              textAlign: "center", padding: "10px 20px 8px", flex: "0 0 auto",
+              textAlign: "center", padding: "calc(10px + env(safe-area-inset-top)) 20px 8px", flex: "0 0 auto",
               background: `linear-gradient(180deg, ${PALETTE.cream} 0%, ${PALETTE.ivory} 100%)`,
               borderBottom: `1px solid ${PALETTE.gold}33`,
             }}
@@ -907,7 +908,7 @@ export default function Home() {
 
             <div
               key={activeIdx}
-              style={{ animation: "fadeUp 0.35s ease forwards", flex: "1 1 auto", minHeight: 0, marginBottom: "8px", height: "90dvh", overflow: "hidden", borderRadius: "24px" }}
+              style={{ animation: "fadeUp 0.35s ease forwards", flex: "1 1 auto", minHeight: 0, marginBottom: "8px", overflow: "hidden", borderRadius: "24px" }}
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
             >
@@ -962,7 +963,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{ padding: "24px 16px 48px", maxWidth: "480px", margin: "0 auto" }}>
+        <div style={{ padding: "64px 16px 48px", maxWidth: "480px", margin: "0 auto" }}>
           <div style={{ background: PALETTE.cream, border: `1px solid ${PALETTE.gold}55`, borderRadius: "18px", padding: "20px 16px", marginBottom: "16px", textAlign: "center" }}>
             <div style={{ fontSize: "9px", letterSpacing: "3px", color: PALETTE.maroon, marginBottom: "14px", fontWeight: 700 }}>
               COUNTDOWN TO THE BIG DAY
