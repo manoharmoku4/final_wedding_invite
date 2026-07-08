@@ -7,7 +7,8 @@
 // 2. Extensions > Apps Script, delete the boilerplate, paste this file's contents.
 // 3. Deploy > New deployment > type "Web app".
 //    Execute as: Me. Who has access: Anyone.
-// 4. Copy the deployed URL (ends in /exec) into the RSVP_SHEET_URL env var on Vercel.
+// 4. Copy the deployed URL (ends in /exec) into the NEXT_PUBLIC_RSVP_SHEET_URL
+//    env var on Vercel (the browser calls this URL directly).
 
 var EVENT_NAMES = ["Engagement", "Mehndi", "Haldi", "Pellikuthuru", "Pelli", "Reception"];
 
