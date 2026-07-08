@@ -264,12 +264,19 @@ function RSVPForm({ accent }: { accent: string }) {
 
   const submit = async () => {
     if (!canSubmit || submitting) return;
+    const sheetUrl = process.env.NEXT_PUBLIC_RSVP_SHEET_URL;
+    if (!sheetUrl) {
+      setError("RSVP isn't configured yet — please try again later.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch("/api/rsvp", {
+      // text/plain avoids a CORS preflight that Apps Script Web Apps don't handle;
+      // Apps Script reads e.postData.contents regardless of the declared content type.
+      const res = await fetch(sheetUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error("submit failed");
