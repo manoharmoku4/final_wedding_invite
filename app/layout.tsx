@@ -23,10 +23,26 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+const title = "Manisha & Akshay | #AkManifested";
+const description =
+  "Join us in celebrating the wedding of Manisha & Akshay, August 16–23, 2026, Hyderabad.";
+
 export const metadata: Metadata = {
-  title: "Manisha & Akshay | #AkManifested",
-  description:
-    "Join us in celebrating the wedding of Manisha & Akshay, August 16–23, 2026, Hyderabad.",
+  metadataBase: new URL("https://mani-akshay-invitation.vercel.app"),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    images: ["/og-image.jpg"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og-image.jpg"],
+  },
 };
 
 export const viewport: Viewport = {
